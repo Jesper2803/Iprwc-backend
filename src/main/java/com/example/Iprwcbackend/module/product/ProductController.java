@@ -1,7 +1,9 @@
 package com.example.Iprwcbackend.module.product;
 
-import com.example.Iprwcbackend.module.user.User;
+
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +28,9 @@ public class ProductController {
     public Optional<Product> getProduct(@PathVariable("productId") Long productId){ return productService.getProduct(productId);}
 
     @PostMapping("/admin/new")
-    public void registerNewProduct(@RequestBody Product product){
+    public ResponseEntity<Void> registerNewProduct(@Valid @RequestBody Product product){
         productService.addNewProduct(product);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping(path = "/admin/{productId}")
@@ -35,15 +38,10 @@ public class ProductController {
         productService.deleteProduct(productId);
     }
 
-    @PutMapping(path = "/admin/{productId}")
-    public void updateUser(@PathVariable("productId") Long productId,
-                           @RequestBody Product product){
-        String productName = product.getProductName();
-        String category = product.getCategory();
-        int amount = product.getAmount();
-        double price = product.getPrice();
-        String imagePath = product.getImagePath();
-        productService.updateProduct(productId, productName, category, amount, price, imagePath);
+    @PutMapping("/admin/{productId}")
+    public ResponseEntity<Void> updateProduct(@PathVariable Long productId, @Valid @RequestBody Product product) {
+        productService.updateProduct(productId, product);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping(path = "category/{category}")

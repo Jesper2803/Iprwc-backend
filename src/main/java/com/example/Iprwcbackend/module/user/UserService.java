@@ -1,9 +1,14 @@
 package com.example.Iprwcbackend.module.user;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,41 +34,31 @@ public class UserService {
         return userRepository.findById(userId);
     }
 
-    public void addNewUser(User user) {
-        Optional<User> userOptional = userRepository.findUserByEmail(user.getEmail());
-        if(userOptional.isPresent()){
-            throw new IllegalStateException("email taken");
-        }
-        userRepository.save(user);
-    }
-
     public void deleteUser(Long userId) {
         userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("user with id " + userId + " does not exist"));
         userRepository.deleteById(userId);
     }
 
     @Transactional
-    public void updateUser(Long userId, String firstName, String lastName, String password, String email) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("user with id " + userId + " does not exist"));
-        if (firstName != null && firstName.length() > 0){
-            user.setFirstName(firstName);
-        }
+    public void updateUser(Long userId, UpdateUserRequest updateRequest) throws MethodArgumentNotValidException {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
 
-        if (lastName != null && lastName.length() > 0){
-            user.setLastName(lastName);
-        }
+        existingUser.setFirstName(updateRequest.getFirstName());
+        existingUser.setLastName(updateRequest.getLastName());
+        existingUser.setEmail(updateRequest.getEmail());
 
-        if (email != null && email.length() > 0){
-            Optional<User> userOptional = userRepository.findUserByEmail(email);
-//            if (userOptional.isPresent()){
-//                throw new IllegalStateException("email taken");
-//            }
-            user.setEmail(email);
-        }
+        if (updateRequest.getPassword() != null && !updateRequest.getPassword().isEmpty()) {
+            String password = updateRequest.getPassword();
+            BindingResult bindingResult = new BeanPropertyBindingResult(updateRequest, "updateRequest");
+            bindingResult.addError(new FieldError("updateRequest", "password", "Wachtwoord moet minstens 8 tekens, een hoofdletter, een kleine letter, een getal en een speciaal teken bevatten"));
 
-        if (password != null && password.length() > 0){
-            String encodedPassword = passwordEncoder.encode(password);
-            user.setPassword(encodedPassword);
+            if (password.length() < 8 || !password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]*$")) {
+                throw new MethodArgumentNotValidException(null, bindingResult);
+            }
+
+            existingUser.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
         }
+        userRepository.save(existingUser);
     }
 }

@@ -1,6 +1,8 @@
 package com.example.Iprwcbackend.module.user;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import org.aspectj.lang.annotation.RequiredTypes;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,6 +29,7 @@ public class User implements UserDetails {
             generator = "user_sequence"
     )
     private Long id;
+
     private String firstName;
     private String lastName;
     private String password;

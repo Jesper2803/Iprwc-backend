@@ -1,6 +1,7 @@
 package com.example.Iprwcbackend.module.category;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "categories")
@@ -8,15 +9,16 @@ public class Category {
 
     @Id
     @SequenceGenerator(
-            name = "product_sequence",
-            sequenceName = "product_sequence",
+            name = "category_sequence",
+            sequenceName = "category_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "product_sequence"
+            generator = "category_sequence"
     )
     private Long id;
+    @NotBlank(message = "Category name is mandatory")
     private String categoryName;
 
     public Category() {

@@ -1,9 +1,8 @@
 package com.example.Iprwcbackend.module.product;
-import com.example.Iprwcbackend.module.user.User;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,26 +34,20 @@ public class ProductService {
         productRepository.deleteById(productId);
     }
 
+
     @Transactional
-    public void updateProduct(Long productId, String productName, String category, int amount, double price, String imagePath) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalStateException("product with id " + productId + " does not exist"));
-        if (productName != null && productName.length() > 0){
-            product.setProductName(productName);
-        }
+    public void updateProduct(Long productId, Product product){
+        Product existingProduct = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
 
-        if (category != null && category.length() > 0){
-            product.setCategory(category);
-        }
+        existingProduct.setProductName(product.getProductName());
+        existingProduct.setAmount(product.getAmount());
+        existingProduct.setPrice(product.getPrice());
+        existingProduct.setCategory(product.getCategory());
+        existingProduct.setImagePath(product.getImagePath());
 
-        if (amount > 0){
-            product.setAmount(amount);
-        }
 
-        product.setPrice(price);
-
-        if (imagePath != null && imagePath.length() > 0){
-            product.setImagePath(imagePath);
-        }
+        productRepository.save(existingProduct);
     }
 
     public List<Product> getProductsByCategory(String category){return productRepository.findAllByCategory(category);}

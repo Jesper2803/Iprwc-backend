@@ -1,6 +1,9 @@
 package com.example.Iprwcbackend.module.product;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "products")
@@ -17,10 +20,15 @@ public class Product {
             generator = "product_sequence"
     )
     private Long id;
+    @NotBlank(message = "Product naam is verplicht")
     private String productName;
+    @NotBlank(message = "Categorie is verplicht")
     private String category;
+    @Min(value = 0, message = "Hoeveelheid moet groter of gelijk aan 0 zijn")
     private int amount;
+    @Min(value = 0, message = "Prijs moet groter of gelijk aan 0 zijn")
     private double price;
+    @NotBlank(message = "Link is verplicht")
     private String imagePath;
 
     public Product() {

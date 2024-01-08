@@ -1,5 +1,6 @@
 package com.example.Iprwcbackend.module.category;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class CategoryController {
     }
 
     @PostMapping("/admin/new")
-    public void registerNewCategory(@RequestBody Category category){
+    public void registerNewCategory(@Valid @RequestBody Category category){
         categoryService.addNewCategory(category);
     }
 
@@ -32,7 +33,7 @@ public class CategoryController {
 
     @PutMapping(path = "/admin/{categoryId}")
     public void updateCategory(@PathVariable("categoryId") Long categoryId,
-                           @RequestBody Category category){
+                           @Valid @RequestBody Category category){
         String categoryName = category.getCategoryName();
         categoryService.updateCategory(categoryId, categoryName);
     }

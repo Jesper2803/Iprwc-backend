@@ -36,6 +36,7 @@ public class SecurityConfig {
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers(
 								"/api/v1/categories/admin/**",
+								"/api/v1/orders/admin",
 								"/api/v1/users/**",
 								"/api/v1/products/admin/**").hasRole("ADMIN")
 						.anyRequest().permitAll())
@@ -48,13 +49,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-//    @Bean
-//    protected CorsConfigurationSource corsConfigurationSource() {
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-//        return source;
-//    }
-
     @Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
@@ -65,5 +59,12 @@ public class SecurityConfig {
 			}
 		};
 	}
+
+	//    @Bean
+//    protected CorsConfigurationSource corsConfigurationSource() {
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+//        return source;
+//    }
 
 }

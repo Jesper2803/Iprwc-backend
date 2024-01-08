@@ -1,8 +1,9 @@
 package com.example.Iprwcbackend.module.user;
 
-import com.example.Iprwcbackend.module.product.Product;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,26 +27,14 @@ public class UserController {
     @GetMapping("{userId}")
     public Optional<User> getUser(@PathVariable("userId") Long userId){ return userService.getUser(userId);}
 
-    @PostMapping()
-    public void registerNewUser(@RequestBody User user){
-        System.out.println(user);
-        userService.addNewUser(user);
-    }
-
     @DeleteMapping(path = "{userId}")
     public void deleteUser(@PathVariable("userId") Long userId){
-        System.out.println(userId);
         userService.deleteUser(userId);
     }
 
-    @PutMapping(path = "{userId}")
-    public void updateUser(@PathVariable("userId") Long userId,
-                           @RequestBody User user){
-        String firstName = user.getFirstName();
-        String lastName = user.getLastName();
-        String password = user.getPassword();
-        String email = user.getEmail();
-        userService.updateUser(userId, firstName, lastName, password, email);
-
+    @PutMapping("/{userId}")
+    public ResponseEntity<Void> updateUser(@PathVariable Long userId, @Valid @RequestBody UpdateUserRequest updateRequest) throws MethodArgumentNotValidException {
+        userService.updateUser(userId, updateRequest);
+        return ResponseEntity.ok().build();
     }
 }

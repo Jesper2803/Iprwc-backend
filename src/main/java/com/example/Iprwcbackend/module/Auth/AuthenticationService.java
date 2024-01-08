@@ -10,7 +10,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLOutput;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +44,6 @@ public class AuthenticationService {
                 .orElseThrow();
         Long userId = user.getId();
         Role userRole = user.getRole();
-        System.out.println(userId);
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder().token(jwtToken).userId(userId).role(userRole).build();
     }

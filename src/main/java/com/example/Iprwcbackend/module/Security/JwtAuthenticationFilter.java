@@ -6,8 +6,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,6 +23,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+
+    private final ApplicationConfig applicationConfig;
+
+    @Autowired
+    public JwtAuthenticationFilter(UserDetailsService userDetailsService, ApplicationConfig applicationConfig, JwtService jwtService) {
+        this.userDetailsService = userDetailsService;
+        this.applicationConfig = applicationConfig;
+        this.jwtService = jwtService;
+    }
 
     @Override
     protected void doFilterInternal(

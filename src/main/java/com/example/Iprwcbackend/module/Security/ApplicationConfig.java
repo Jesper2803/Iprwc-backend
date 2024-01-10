@@ -50,13 +50,13 @@ public class ApplicationConfig {
     }
 
 
-    @Bean(name = "jpaSharedEM_entityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        return builder
-                .dataSource(dataSource)
-                .packages("com.example.Iprwcbackend.module.user", "com.example.Iprwcbackend.module.product", "com.example.Iprwcbackend.module.category", "com.example.Iprwcbackend.module.order") // Your entity package
-                .persistenceUnit("jpaSharedEM")
-                .build();
-    }
+//    @Bean(name = "jpaSharedEM_entityManagerFactory")
+//    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+//        return builder
+//                .dataSource(dataSource)
+//                .packages("com.example.Iprwcbackend.module.user", "com.example.Iprwcbackend.module.product", "com.example.Iprwcbackend.module.category", "com.example.Iprwcbackend.module.order") // Your entity package
+//                .persistenceUnit("jpaSharedEM")
+//                .build();
+//    }
 
 }

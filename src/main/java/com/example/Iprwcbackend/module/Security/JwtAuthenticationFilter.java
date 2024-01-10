@@ -24,14 +24,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
-    private final ApplicationConfig applicationConfig;
+//    private final ApplicationConfig applicationConfig;
 
-    @Autowired
-    public JwtAuthenticationFilter(UserDetailsService userDetailsService, ApplicationConfig applicationConfig, JwtService jwtService) {
-        this.userDetailsService = userDetailsService;
-        this.applicationConfig = applicationConfig;
-        this.jwtService = jwtService;
-    }
+//    @Autowired
+//    public JwtAuthenticationFilter(UserDetailsService userDetailsService, ApplicationConfig applicationConfig, JwtService jwtService) {
+//        this.userDetailsService = userDetailsService;
+//        this.applicationConfig = applicationConfig;
+//        this.jwtService = jwtService;
+//    }
 
     @Override
     protected void doFilterInternal(

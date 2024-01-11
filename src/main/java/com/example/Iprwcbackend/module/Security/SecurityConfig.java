@@ -60,11 +60,5 @@ public class SecurityConfig {
 		};
 	}
 
-	//    @Bean
-//    protected CorsConfigurationSource corsConfigurationSource() {
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-//        return source;
-//    }
 
 }

@@ -21,8 +21,6 @@ import javax.sql.DataSource;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final EntityManagerFactoryBuilder builder;
-    private final DataSource dataSource;
     private final UserRepository repository;
 
     @Bean
@@ -49,14 +47,5 @@ public class ApplicationConfig {
         return new BCryptPasswordEncoder();
     }
 
-
-//    @Bean(name = "jpaSharedEM_entityManagerFactory")
-//    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-//        return builder
-//                .dataSource(dataSource)
-//                .packages("com.example.Iprwcbackend.module.user", "com.example.Iprwcbackend.module.product", "com.example.Iprwcbackend.module.category", "com.example.Iprwcbackend.module.order") // Your entity package
-//                .persistenceUnit("jpaSharedEM")
-//                .build();
-//    }
 
 }

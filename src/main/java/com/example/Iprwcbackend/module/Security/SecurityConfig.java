@@ -54,7 +54,7 @@ public class SecurityConfig {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("http://localhost:4200");
+				registry.addMapping("/**").allowedOrigins("https://iprwc-jesper.vercel.app");
 				registry.addMapping("/**").allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS");
 			}
 		};
